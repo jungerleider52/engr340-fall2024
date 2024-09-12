@@ -10,6 +10,17 @@ Note: this problem does not require the "compounding interest" formula from the 
 
 ### Your code here ###
 
-in_state_gift = 0
+# annual rate of return
+rate = 0.05
 
-out_state_gift = 0
+# Calculate the yearly cost for in-state and out-of-state
+in_state_sem = 30792
+out_state_sem = 47882
+
+# Calculate how much large of a gift to pay for tuition with the return
+in_state_gift = in_state_sem / rate
+out_state_gift = out_state_sem / rate
+
+# Print responses
+print("In-state gift amount:", in_state_gift)
+print("Out-of-state gift amount:", out_state_gift)

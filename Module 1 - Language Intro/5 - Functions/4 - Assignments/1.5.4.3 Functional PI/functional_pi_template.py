@@ -10,10 +10,40 @@ def my_pi(target_error):
     """
 
     ### YOUR CODE HERE ###
+    a = 1
+    b = 1 / (math.sqrt(2))
+    t = 0.25
+    p = 1
+
+    # perform 10 iterations of this loop
+    for i in range(1, 10):
+        """
+        Step 2: Update each variable based upon the algorithm. Take care to ensure
+        the order of operations and dependencies among calculations is respected. You
+        may wish to create new "temporary" variables to hold intermediate results
+        """
+
+        ### YOUR CODE HERE ###
+
+        # assign new values
+        a1 = (a + b) / 2
+        b1 = math.sqrt(a * b)
+        p1 = 2 * p
+        t1 = t - (p * ((a1 - a) ** 2))
+
+        # update variables
+        a = a1
+        b = b1
+        t = t1
+        p = p1
+
+        # print out the current loop iteration. This is present to have something in the loop.
+        print("Loop Iteration: ", i)
+
+        pi_estimate = ((a + b) ** 2) / (4 * t)
 
     # change this so an actual value is returned
-    return 0
-
+    return pi_estimate
 
 
 

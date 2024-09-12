@@ -1,7 +1,6 @@
 # bring in randomness cause we need it in our lives
 import random
 
-
 # copy in Dr. Forsyth's random list function for use
 def generate_random_int_list(max_length, upper_bound):
     # generate random length between 2 and max_length
@@ -30,7 +29,13 @@ odds_list = []
 """
 Step 1: Write a FOR loop to iterate through the list nums
 """
-
+for i in nums:
+    if (i % 2) == 0:
+        # num is even
+        evens_list.append(i)
+    else:
+        # num is odd
+        odds_list.append(i)
 
 """
 Step 2: Inside the FOR loop, examine the contents of nums. If the

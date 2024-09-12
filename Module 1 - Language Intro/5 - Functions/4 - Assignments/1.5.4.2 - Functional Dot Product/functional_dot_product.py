@@ -19,10 +19,13 @@ def dot_product(a,b):
     """
 
     ### YOUR CODE HERE ###
+    dot = 0
 
+    for i in range(0, len(a)):
+        dot += (vector_a[i] * vector_b[i])
 
     ### CHANGE THIS RETURN VALUE. IT IS HERE SO THE CODE DOES NOT ERROR
-    return None
+    return dot
 
 """
 Step 1: Generate two "vectors" of equal length but full of random values

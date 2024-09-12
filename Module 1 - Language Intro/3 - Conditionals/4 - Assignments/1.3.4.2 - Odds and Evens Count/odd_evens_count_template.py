@@ -14,7 +14,6 @@ def generate_random_int_list(max_length, upper_bound):
     # return the generated list
     return vars
 
-
 # set the maximum length of the list
 max_length = 100
 
@@ -29,3 +28,12 @@ num_evens = 0
 num_odds = 0
 
 ### YOUR CODE BEGINS HERE ###
+
+for i in nums:
+    if (i % 2) == 0:
+        num_evens = num_evens + 1
+    else:
+        num_odds = num_odds + 1
+
+print("Num of evens:", num_evens)
+print("Num of odds:", num_odds)
