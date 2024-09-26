@@ -174,7 +174,6 @@ if __name__ == "__main__":
     # modify this line to select different samples in the material folder
     sample_name = "C01A1045CR_1"
 
-
     ### Do not modify below this line ###
 
     path_to_directory = "../../../data/tensile/"
@@ -187,12 +186,6 @@ if __name__ == "__main__":
     # sample diameter (mm), time (s), displacement (mm), force (kN), and strain (%)
     sample_diameter, time, displacement, force, strain = parse_tensile_file(path_to_file)
 
-    #plt.scatter(strain,force,label="Force - Strain")
-    #plt.xlabel("Strain (%)")
-    #plt.ylabel("Force (kN)")
-    #plt.title("Force Applied and Resulting Strain")
-    #plt.show()
-
     # Step #1: Given the forces and sample diameter, calculate the strain
     stress = calculate_stress(force, sample_diameter)
 
@@ -202,7 +195,7 @@ if __name__ == "__main__":
 
     # use scatter plot so we don't assume a line (yet)
     plt.scatter(strain, stress, label="Stress - Strain")
-    plt.xlabel('Strain (%)')
+    plt.xlabel('Strain (mm/mm)')
     plt.ylabel('Stress (MPa)')
     plt.title('Stress-Strain Curve for Sample ' + sample_name)
     plt.show()
@@ -213,8 +206,9 @@ if __name__ == "__main__":
     # calculate easy variables
     ultimate_tensile_strength, fracture_strain = calculate_max_strength_strain(strain, stress)
 
-    if ultimate_tensile_strength==-1 or fracture_strain ==-1:
-        print("Error! Tensile Strength or Fracture Strain returned as -1. Did you complete the calculate_max_strength() method?")
+    if ultimate_tensile_strength == -1 or fracture_strain == -1:
+        print(
+            "Error! Tensile Strength or Fracture Strain returned as -1. Did you complete the calculate_max_strength() method?")
         sys.exit(-1)
 
     print("Ultimate Tensile Stress is ", ultimate_tensile_strength, "MPa")
@@ -224,7 +218,7 @@ if __name__ == "__main__":
     # to determine elastic modulus
 
     linear_index, slope, intercept = calculate_elastic_modulus(strain, stress)
-    
+
     if linear_index is None or slope is None or intercept is None:
         print("Incorrect value determined by calculate_elastic_modulus() did you implement that function?")
         sys.exit(-1)
@@ -233,7 +227,7 @@ if __name__ == "__main__":
 
     # show the original curve indicating the secant modulus at 40%
     plt.scatter(strain, stress, label="Stress - Strain")
-    plt.xlabel('Strain (%)')
+    plt.xlabel('Strain (mm/mm)')
     plt.ylabel('Stress (MPa)')
     plt.title('Stress-Strain Curve for Sample ' + sample_name)
 
@@ -247,9 +241,16 @@ if __name__ == "__main__":
     linear_stress = stress[0:linear_index]
 
     plt.scatter(linear_strain, linear_stress, label="Stress - Strain")
-    plt.xlabel('Strain (%)')
+    plt.xlabel('Strain (mm/mm)')
     plt.ylabel('Stress (MPa)')
     plt.title('Linear Region for Sample ' + sample_name + ' with best fit')
+
+    # compute line y=mx+b
+    best_fit_line = slope * linear_strain + intercept
+    plt.plot(linear_strain, best_fit_line, label="Best Linear Fit")
+
+    plt.legend()
+    plt.show()
 
     ### Step 4: calculate 0.2% yield strength ###
     offset_line, intercept_index = calculate_percent_offset(slope, strain, stress)
@@ -280,6 +281,5 @@ if __name__ == "__main__":
     plt.show()
 
     print("Done!")
-
 
 

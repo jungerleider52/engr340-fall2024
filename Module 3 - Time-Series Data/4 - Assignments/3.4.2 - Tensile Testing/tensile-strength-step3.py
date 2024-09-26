@@ -57,7 +57,7 @@ def calculate_stress(force, sample_diameter):
     a sample diameter (mm)
     :param force: An array of forces/loads applied to the sample in Kilo Newtons (kN)
     :param sample_diameter: The diameter of the sample in millimeters (mm)
-    :return: An array of stresses experienced by the sample in Kilo Pascals (KPa)
+    :return: An array of stresses experienced by the sample in Kilo Pascals (MPa)
     """
 
     # calculate the cross-section area (mm^2)
