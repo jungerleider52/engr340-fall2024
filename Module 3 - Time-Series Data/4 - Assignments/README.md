@@ -1,4 +1,4 @@
-**7.4.1. - Reactive Strength Index**
+**3.4.1. - Reactive Strength Index**
 
 The Reactive Stength Index (RSI) is a measure of how rapidly an athlete can change their momentum an direction.
 In this assignment you will calculate the RSI from several human subject participants on both a force plate and accelerometer.
@@ -15,7 +15,7 @@ Compare your results against that dataset and then upload your final solution to
 Additional details can be found in [Exploring Amateur Performance in Athletic Tests
 Using Wearable Sensors](https://www.jasonforsyth.net/pdf/mitchell-sieds-camera-ready.pdf)
 
-**7.4.2 - Tensile Strength Testing**
+**3.4.2 - Tensile Strength Testing**
 
 Complete several templates to implement various tensile testing methods. Each template should be completed in order as they build upon one another.
 
