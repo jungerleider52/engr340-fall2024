@@ -61,7 +61,7 @@ def calculate_stress(force, sample_diameter):
     """
 
     # calculate the cross-section area (mm^2)
-    area = 0.25 * (np.pi) * (sample_diameter ** 2)
+    area = 0.25 * np.pi * (sample_diameter ** 2)
 
     # calculate stress (MPa) from load (kN) and cross-sectional area
     stress = (force / area) * 1000
@@ -109,13 +109,13 @@ def calculate_elastic_modulus(strain, stress):
     # use from 0 to that value to create a linear plot
 
     ### your code below ###
-    secant_strain = 0.4 * ultimate_tensile_strength
+    secant_strain = 0.4 * max(stress)
 
     # Step 3b: find the intersection between 40% line and the curvey
     # take the abs() difference between the stress vector and secant_strain point
 
     ### your code below ###
-    diffs = abs(stress - secant_strain)
+    diffs = np.abs(stress - secant_strain)
 
     # use np.argmin() to find the minimum of the diffs array.
     # this will be the INDEX of the point in stress-strain that is closest to
