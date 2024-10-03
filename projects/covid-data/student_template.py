@@ -1,4 +1,5 @@
 import sys
+import pandas as pd
 
 
 def parse_nyt_data(file_path=''):
@@ -38,7 +39,7 @@ def parse_nyt_data(file_path=''):
             continue
 
         # format is date,county,state,fips,cases,deaths
-        (date,county, state, fips, cases, deaths) = line.rstrip().split(",")
+        (date, county, state, fips, cases, deaths) = line.rstrip().split(",")
 
         # clean up the data to remove empty entries
         if cases=='':
@@ -65,9 +66,27 @@ def first_question(data):
     # When was the first positive COVID case in Harrisonburg?
     :return:
     """
+    RC_first_case_date = None
+    HB_first_case_date = None
 
-    # your code here
-    return
+    # find the earliest instance in rockingham where there is a covid case, and save the date of it
+    for (date, county, state, cases, deaths) in data:
+        if county == "Rockingham" and state == "Virginia":
+            if cases > 0:
+                RC_first_case_date = date
+                continue
+
+    # do the same thing for hburg
+    for (date, county, state, cases, deaths) in data:
+        if county == "Harrisonburg city" and state == "Virginia":
+            if cases > 0:
+                HB_first_case_date = date
+                continue
+
+
+    print(RC_first_case_date, HB_first_case_date)
+
+    return RC_first_case_date, HB_first_case_date
 
 def second_question(data):
     """
@@ -90,8 +109,8 @@ def third_question(data):
 if __name__ == "__main__":
     data = parse_nyt_data('us-counties.csv')
 
-    for (date, county, state, cases, deaths) in data:
-        print('On ', date, ' in ', county, ' ', state, ' there were ', cases, ' cases and ', deaths, ' deaths')
+    #for (date, county, state, cases, deaths) in data:
+    #    print('On ', date, ' in ', county, ' ', state, ' there were ', cases, ' cases and ', deaths, ' deaths')
 
 
     # write code to address the following question: Use print() to display your responses.
