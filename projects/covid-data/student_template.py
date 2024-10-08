@@ -74,15 +74,14 @@ def first_question(data):
         if county == "Rockingham" and state == "Virginia":
             if cases > 0:
                 RC_first_case_date = date
-                continue
+                break
 
     # do the same thing for hburg
     for (date, county, state, cases, deaths) in data:
         if county == "Harrisonburg city" and state == "Virginia":
             if cases > 0:
                 HB_first_case_date = date
-                continue
-
+                break
 
     print(RC_first_case_date, HB_first_case_date)
 

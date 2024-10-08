@@ -1,4 +1,5 @@
 import numpy as np
+from fontTools.afmLib import readlines
 from scipy.stats import ttest_1samp, norm, ttest_ind
 
 
@@ -34,7 +35,14 @@ def one_sided_tests(_files: list, _mean: float, _alpha: float, _less_than: bool)
     # list of files that are out of spec
     reject_null_hypothesis = []
 
-    # YOUR CODE HERE #
+    for file in _files:
+        array = np.loadtxt(file)
+        if _less_than:
+            (stat, p_value) = ttest_1samp(array, popmean=_mean, alternative='less')
+        else:
+            (stat, p_value) = ttest_1samp(array, popmean=_mean, alternative='greater')
+        if p_value < _alpha:
+            reject_null_hypothesis.append(file)
 
     # return samples that were rejected
     return reject_null_hypothesis
