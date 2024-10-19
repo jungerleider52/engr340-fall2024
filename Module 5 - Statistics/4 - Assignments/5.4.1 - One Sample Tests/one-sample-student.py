@@ -1,5 +1,4 @@
 import numpy as np
-from fontTools.afmLib import readlines
 from scipy.stats import ttest_1samp, norm, ttest_ind
 
 
@@ -71,12 +70,12 @@ if __name__ == "__main__":
     greater_than_distribution_two = np.random.normal(loc=target_mu + (1.0), scale=target_std, size=num_samples)
 
     # write samples to files
-    write_to_csv('base1.txt', base_distribution_one)
-    write_to_csv('base2.txt', base_distribution_one)
-    write_to_csv('lesser1.txt', less_than_distribution_one)
-    write_to_csv('lesser2.txt', less_than_distribution_two)
-    write_to_csv('greater1.txt', greater_than_distribution_one)
-    write_to_csv('greater2.txt', greater_than_distribution_two)
+    write_to_csv('../5.4.1 - One Sided Tests/base1.txt', base_distribution_one)
+    write_to_csv('../5.4.1 - One Sided Tests/base2.txt', base_distribution_one)
+    write_to_csv('../5.4.1 - One Sided Tests/lesser1.txt', less_than_distribution_one)
+    write_to_csv('../5.4.1 - One Sided Tests/lesser2.txt', less_than_distribution_two)
+    write_to_csv('../5.4.1 - One Sided Tests/greater1.txt', greater_than_distribution_one)
+    write_to_csv('../5.4.1 - One Sided Tests/greater2.txt', greater_than_distribution_two)
 
     # place one-sided test files in a list
     one_sided_test_files = ['lesser1.txt', 'lesser2.txt', 'greater1.txt', 'greater2.txt']
