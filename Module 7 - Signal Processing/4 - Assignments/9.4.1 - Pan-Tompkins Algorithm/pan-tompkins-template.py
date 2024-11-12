@@ -1,5 +1,22 @@
 import numpy as np
 from ekg_testbench import EKGTestBench
+import scipy.signal as sp
+from scipy.fft import fft
+
+
+def plot_fft_response(signal, f_s):
+    N = len(signal) // 2
+    X = fft(signal)[:N]
+    sample_intervals = np.arange(N)
+    T = N / f_s
+    freq = sample_intervals / T / 2
+
+    plt.stem(freq, np.abs(X), 'b', markerfmt=" ", basefmt="-b")
+    plt.xlabel('Freq (Hz)')
+    plt.ylabel('FFT Amplitude |X(freq)|')
+    plt.title('One-Sided FFT of Signal')
+    plt.show()
+
 
 def detect_heartbeats(filepath):
     """
@@ -15,55 +32,81 @@ def detect_heartbeats(filepath):
     path = filepath
 
     # load data in matrix from CSV file; skip first two rows
-    ## your code here
+    data = np.loadtxt(filepath, delimiter=',', skiprows=2)
 
     # save each vector as own variable
-    ## your code here
+    time = data[:,0]
+    v1 = data[:,1]
+    v2 = data[:, 2]
+
+    # calculate sampling rate
+    f_s = np.average(np.diff(time)) ** -1
 
     # identify one column to process. Call that column signal
+    signal = v1
 
-    signal = -1 ## your code here
+    # run an fft on the data
+    #plot_fft_response(signal, f_s)
+
+    low_fc = 5
+    high_fc = 123
 
     # pass data through LOW PASS FILTER (OPTIONAL)
-    ## your code here
+    filter_order = 4
+    b, a = sp.butter(filter_order, high_fc, fs=f_s, btype='lowpass', output='ba')
+    signal = sp.filtfilt(b, a, signal)
 
     # pass data through HIGH PASS FILTER (OPTIONAL) to create BAND PASS result
-    ## your code here
+    b, a = sp.butter(filter_order, low_fc, fs=f_s, btype='highpass', output='ba')
+    signal = sp.filtfilt(b, a, signal)
 
     # pass data through differentiator
-    ## your code here
+    signal = np.asarray(signal)
+    signal = np.diff(signal)
 
     # pass data through square function
-    ## your code here
+    signal = np.square(signal)
 
     # pass through moving average window
-    ## your code here
+    window = 20
+    signal = np.convolve(signal, ([1]*window))
+
+    # find and remove outliers from the signal
+    avg = np.average(signal)
+    std = np.std(signal)
+
+    X = 1.4
+    for i in range(len(signal)):
+        if signal[i] > (avg + (X*std)): # avg plus X stdevs
+            signal[i] = avg
+
+    # calculate what height to create the threshold
+    H = 0.25
+    height = max(signal) * H
 
     # use find_peaks to identify peaks within averaged/filtered data
     # save the peaks result and return as part of testbench result
-
-    ## your code here peaks,_ = find_peaks(....)
-
-    beats = None
+    beats, _ = sp.find_peaks(signal, height=height, distance=120)
 
     # do not modify this line
     return signal, beats
 
 
 # when running this file directly, this will execute first
-if __name__ == "__main__":
-
+def test_(database_name):
     # place here so doesn't cause import error
     import matplotlib.pyplot as plt
 
     # database name
-    database_name = 'mitdb_201'
+    #database_name = 'mitdb_201'
+    #database_name = 'nstdb_118e00'
+    #database_name = 'qtdb_sel104'
 
     # set to true if you wish to generate a debug file
     file_debug = False
 
     # set to true if you wish to print overall stats to the screen
-    print_debug = True
+    print_debug = False
 
     # set to true if you wish to show a plot of each detection process
     show_plot = False
@@ -140,4 +183,29 @@ if __name__ == "__main__":
         print(database_name, "|\t\t", true_positive, "|\t", false_positive, '|\t', false_negative, '|\t', round(f1, 3))
         print("-------------------------------------------------")
 
-    print("Done!")
+    #print("Done!")
+
+    return round(f1, 3)
+
+if __name__ == "__main__":
+
+    #test_('nstdb_119e24')
+    #test_('mitdb_232')
+    #test_('mitdb_210')
+
+
+    files = ['mitdb_100','mitdb_102','mitdb_103','mitdb_104','mitdb_107','mitdb_201',
+             'mitdb_213','mitdb_219','mitdb_220','nstdb_118e00','nstdb_118e06','qtdb_sel104',
+             'mitdb_210','mitdb_217','mitdb_219','mitdb_220','mitdb_232','nstdb_118e24','nstdb_119e24',
+             'qtdb_sel232']
+
+    files = list(set(files))
+
+    tot_fp = 0
+
+    for i in range(len(files)):
+        fp = test_(files[i])
+        tot_fp += fp
+        print(f"{files[i]}: {fp}")
+
+    print(f"average FP: {tot_fp / len(files)}")

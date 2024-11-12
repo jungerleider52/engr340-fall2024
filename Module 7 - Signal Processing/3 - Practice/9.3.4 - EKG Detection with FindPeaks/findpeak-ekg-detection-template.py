@@ -23,7 +23,7 @@ Step 2: Determine how much data to use...
 """
 # If you wish to only run on ~10s of data uncomment the line below
 # if you wish to run on all data, comment out this line
-signal = signal[0:3300]
+signal = signal[0:12000]
 
 
 """
@@ -31,7 +31,7 @@ Step 3: Use Find Peaks
 """
 
 # you may want to explore various parameters for the function that will help you!
-peaks, _ = find_peaks(signal)
+peaks, _ = find_peaks(signal, height=1.5, distance=85)
 print("Within the sample we found ", len(peaks), " heart beats with find_peaks!")
 
 """
