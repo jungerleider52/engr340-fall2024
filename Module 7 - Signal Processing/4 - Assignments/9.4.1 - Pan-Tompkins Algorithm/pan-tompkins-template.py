@@ -74,19 +74,19 @@ def detect_heartbeats(filepath):
     # find and remove outliers from the signal
     avg = np.average(signal)
     std = np.std(signal)
-
-    X = 1.4
+    signal_copy = np.copy(signal)
+    z_score = 1.4
     for i in range(len(signal)):
-        if signal[i] > (avg + (X*std)): # avg plus X stdevs
-            signal[i] = avg
+        if signal[i] >= (avg + (z_score * std)): # avg plus X stdevs
+            signal_copy[i] = avg + (z_score * std)
 
     # calculate what height to create the threshold
-    H = 0.25
-    height = max(signal) * H
+    H = 0.35
+    height = max(signal_copy) * H
 
     # use find_peaks to identify peaks within averaged/filtered data
     # save the peaks result and return as part of testbench result
-    beats, _ = sp.find_peaks(signal, height=height, distance=120)
+    beats, _ = sp.find_peaks(signal, height=height, distance=150)
 
     # do not modify this line
     return signal, beats
