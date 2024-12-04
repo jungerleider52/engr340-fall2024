@@ -2,6 +2,7 @@ import numpy as np
 from ekg_testbench import EKGTestBench
 import scipy.signal as sp
 from scipy.fft import fft
+import matplotlib.pyplot as plt
 
 
 def plot_fft_response(signal, f_s):
@@ -46,7 +47,7 @@ def detect_heartbeats(filepath):
     signal = v1
 
     # run an fft on the data
-    #plot_fft_response(signal, f_s)
+    # plot_fft_response(signal, f_s)
 
     low_fc = 5
     high_fc = 123
@@ -75,10 +76,10 @@ def detect_heartbeats(filepath):
     avg = np.average(signal)
     std = np.std(signal)
     signal_copy = np.copy(signal)
-    z_score = 1.4
-    for i in range(len(signal)):
-        if signal[i] >= (avg + (z_score * std)): # avg plus X stdevs
-            signal_copy[i] = avg + (z_score * std)
+    z = 1.4
+    for j, sig in enumerate(signal):
+        if sig >= avg + (z * std): # avg plus z stds
+            signal_copy[j] = avg + (z * std)
 
     # calculate what height to create the threshold
     H = 0.35
@@ -191,21 +192,22 @@ if __name__ == "__main__":
 
     #test_('nstdb_119e24')
     #test_('mitdb_232')
-    #test_('mitdb_210')
+    test_('mitdb_100')
 
 
-    files = ['mitdb_100','mitdb_102','mitdb_103','mitdb_104','mitdb_107','mitdb_201',
+    files = ['mitdb_100','mitdb_102','mitdb_103','mitdb_104','mitdb_107','mitdb_201', 'mitdb_210',
              'mitdb_213','mitdb_219','mitdb_220','nstdb_118e00','nstdb_118e06','qtdb_sel104',
-             'mitdb_210','mitdb_217','mitdb_219','mitdb_220','mitdb_232','nstdb_118e24','nstdb_119e24',
-             'qtdb_sel232']
+             'mitdb_217','mitdb_219','mitdb_220','mitdb_232','nstdb_118e24','nstdb_119e24', 'qtdb_sel232']
 
+    # remove dupes cuz too lazy to do by hand
     files = list(set(files))
+    #print(len(files))
 
     tot_fp = 0
 
     for i in range(len(files)):
-        fp = test_(files[i])
-        tot_fp += fp
-        print(f"{files[i]}: {fp}")
+        f1 = test_(files[i])
+        tot_fp += f1
+        print(f"{files[i]}: {f1}")
 
     print(f"average FP: {tot_fp / len(files)}")

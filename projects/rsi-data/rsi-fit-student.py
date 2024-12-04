@@ -61,7 +61,7 @@ a fit or not. Do this for both acceleration and force plate distributions. It is
 print('\n\n-----Question 2-----')
 
 # create 10 bins (more bins = higher precision?)
-bins = np.linspace(-2, 2, 9)
+bins = np.linspace(0, 2, 9)
 # add infinity onto either end of the bins
 bins = np.r_[-np.inf, bins, np.inf]
 
@@ -79,7 +79,7 @@ expected_counts = expected_prob * len(accel_rsi)
 
 # Conduct chi2 test
 # Reduce the degrees of freedom as the normal distribution has two parameters
-(chi_stat, p_value) = chisquare(f_obs=observed_counts, f_exp=expected_counts, ddof=1)
+(chi_stat, p_value) = chisquare(f_obs=observed_counts, f_exp=expected_counts, ddof=2)
 print(f"Accelerometer Chi2 Stat: {chi_stat:.4f}, Accelerometer P-Value: {p_value:.4f}")
 
 alpha = 0.05
